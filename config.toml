@@ -1,0 +1,5 @@
+baseURL = 'http://exarLab.com/'
+languageCode = 'en-us'
+title = 'Exar Lab'
+theme = 'blank'
+summaryLength = 20
