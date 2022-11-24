@@ -2,7 +2,7 @@
     font-family: monospace;
     font-weight: 100;
     color: lightgrey;
-    background: rgb(50,50,50);
+    background: #1a1b26;
     max-width: 800px;
     margin: auto;
     padding: 2px;
@@ -32,7 +32,6 @@ p {
     background: rgb(25, 25, 50);
     padding-left: 15px;
     padding-right: 15px;
-    color: darkgrey;
     font-size: 20px;
     padding-bottom: 10px;
     padding-top: 10px;

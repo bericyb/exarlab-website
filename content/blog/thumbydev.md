@@ -26,7 +26,7 @@ My favorite thing about the Thumby is the fact that it's open source! If this th
 
 The game I made for the Thumby is called Astro Jumper. It's inspired by the classic mobile games Papi Jump, and the more widely known Doodle Jump. 
 
-![](images/thumby/splashscreen.png)
+![](/images/thumby/splashscreen.png)
 
 My brother in-law is meta-ironically obsessed with Among Us, so I made the character a crewmate. 
 You can watch a short demo of the game [here](https://youtu.be/mDuT7RkSMFo)
