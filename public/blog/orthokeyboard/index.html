@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>new Keyboard(40%, ortholinear)</title>
+	
+	
+	<link rel="stylesheet" href="/css/style.css">
+	
+</head>
+<body>
+	<header>
+	<a href="http://exarLab.com/">Exar Lab</a>
+	
+</header>
+
+	
+<main>
+	<article>
+		<h1>new Keyboard(40%, ortholinear)</h1>
+		<time datetime=" 2022-09-09T03:59:05">09.09.2022 03:59</time>
+		<div>
+			<h1 id="conception">conception</h1>
+<p>I have a ritual of getting a new keyboard every time I start a new job.
+I&rsquo;m not sure why I do it, but it&rsquo;s a good way to get myself excited
+about the code that I will get to write and the work I will do.
+Most recently, I decided to build my own keyboard by hand and on
+the cheap. I&rsquo;m talking 3D printed case, cheap switches, and generic
+keycaps. The only thing I splurged on was the microcontroller. (more
+on that later).</p>
+<p>Because I decided to make my keyboard by hand however, I was eager to
+make something unique and special. After all, custom keyboards can
+be as much about self-expression as they are productivity. Inspired
+by the look and the practicality of the <a href="https://ergodox-ez.com/pages/planck">Ergodox Planck EZ</a>
+I decided to build a 40% ortholinear keyboard, but at literally less
+than half the price.</p>
+<h1 id="the-case">the case</h1>
+<p>The case was by far the hardest part of the build. I decided to go
+with the <a href="https://www.thingiverse.com/thing:4207020">Void40</a>. 3D
+printing this guy was a real pain in the @$$. This 3D print is
+specifically made to fit on the bed of an Ender 3 (the same printer
+I have) when printed diagonally. While the 3D model&rsquo;s dimensions are
+just the right size to fit on the physical print bed, the stock
+Ender 3 firmware restrictions do not let you use the full print bed
+area. Instead, there is a safety of 15mm in both the x and y direction.</p>
+<p>Here&rsquo;s a image showing just how close the stock Ender 3 is to being
+able to print this keyboard case.</p>
+<p><img src="/images/keyboard/keyboard.png" alt=""></p>
+<p>After half a dozen failed prints I discovered that I needed
+to install custom firmware on my 3D printer to get access to
+the full size bed in software. Using <a href="https://all3dp.com/2/ender-3-bed-size-what-is-it-really/">this</a>
+guide, I was finally able to successfully print a full case.</p>
+<p><img src="/images/keyboard/kbcase.jpg" alt=""></p>
+<h1 id="the-switches-and-keys">the switches and keys</h1>
+<p>I was on a budget so Gateron mx style switches were a natural choice.
+I went with brown since I like the tactile feel, but wanted
+to maintain relationships with the people I work with in-office.
+Clicky switches are for kids is my hot take. For keys, I
+just went with generic blank XDA keycaps. The best prices that
+I could find were on <a href="https://flashquark.com/">flashquark</a>.</p>
+<h1 id="microcontroller-and-misc-parts">microcontroller and misc parts</h1>
+<p>I have had bad experience with bluetooth keyboards in the
+past due to their long delays when starting to type, or with the
+latency in the connection. Because of this I was fine with a
+wired keyboard as long as it was USB type C. At this point,
+nothing in my life except my Ti-84 calculator used micro USB.
+Naturally, I chose the Elite C micro controller.</p>
+<p>Other miscellaneous parts included plenty of diodes, heat
+shrink tubing, wiring, and hardware to close the case up with
+its components.</p>
+<h1 id="assembly">assembly</h1>
+<p>Putting together the components is simple, but just time
+consuming. Because, I didn&rsquo;t use a PCB, connecting all the
+switches requires soldering a diode and a wire to each row
+and column of the switches. Because my keys were laid out
+linearly, it wasn&rsquo;t hard to figure out where to solder what.
+Here&rsquo;s what the internal wiring looks like</p>
+<p><img src="/images/keyboard/wired.jpg" alt="">
+<img src="/images/keyboard/fullwired.jpg" alt=""></p>
+<p>If you look closely, you can see each row and column&rsquo;s
+wiring go to a connection on the microcontroller. When a key
+is pressed, the connection is closed on a row and column.
+This allows the microcontroller to determine which key was
+pressed by checking which row and column&rsquo;s circuit was closed.
+Effectively an X and Y coordinate for each key on the board.</p>
+<h1 id="programming">programming</h1>
+<p>QMK is a opensource firmware for microcontrollers that are
+commonly used in keyboards. It allows for people to make their
+own keymappings for their custom builds as well as manufactured
+boards. I used QMK to program my microcontroller. The maker of
+the VOID40 keyboard case has their own fork of QMK that
+provides a great starting point for keymapping.</p>
+<p>I wanted to make my keyboard as efficient as possible for
+programming by placing commonly used special symbols as close as
+possible to the home row.</p>
+<p>Here&rsquo;s my layout with the 3 different layers.</p>
+<pre tabindex="0"><code>/* Qwerty
+ * ,-----------------------------------------------------------------------------------.
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  &#39;   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |RShift|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | LCtrl|      | LGUI | LAlt | Lower| Space| Space| Raise| Left | Down |  Up  |Right |
+ * `-----------------------------------------------------------------------------------&#39;
+ */
+</code></pre><pre tabindex="0"><code>/* Lower
+* ,-----------------------------------------------------------------------------------.
+* |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &amp;  |   *  |   (  |   )  | Bksp |
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |   {  |   }  |  |   |
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* | Caps |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | | Home | End  | Enter|
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* |      |      |      |      |      | Play | Play |      | Prev | Vol- | Vol+ | Next |
+* `-----------------------------------------------------------------------------------&#39;
+*/
+</code></pre><pre tabindex="0"><code>/* Raise
+* ,-----------------------------------------------------------------------------------.
+* |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Bksp |
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   -  |   =  |   [  |   ]  |  \   |
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* | Caps |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO # |ISO / |Pg Up |Pg Dn | Enter|
+* |------+------+------+------+------+------+------+------+------+------+------+------|
+* |      |      |      |      |      | Play | Play |      | Prev | Vol- | Vol+ | Next |
+* `-----------------------------------------------------------------------------------&#39;
+*/
+</code></pre><h1 id="end">end()</h1>
+<p>I&rsquo;m absolutely thrilled about how this board turned out.
+I was worried about a cheap feel, but the 3D printed case
+holds up great. The ortholinear layout seemed daunting at first,
+but I believe that anyone with decent touch typing skills
+would easily be able to start using the keyboard at decent
+speed.</p>
+<p><img src="/images/keyboard/finishedkb.jpg" alt=""></p>
+
+		</div>
+		
+		
+	</article>
+</main>
+
+	<footer>
+	<p>&copy; 2022 <a href="http://exarLab.com/">Exar Lab</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Publish an Expo React Native App to the App Store</title>
+	
+	
+	<link rel="stylesheet" href="/css/style.css">
+	
+</head>
+<body>
+	<header>
+	<a href="http://exarLab.com/">Exar Lab</a>
+	
+</header>
+
+	
+<main>
+	<article>
+		<h1>Publish an Expo React Native App to the App Store</h1>
+		<time datetime=" 2022-09-27T04:25:50">09.27.2022 04:25</time>
+		<div>
+			<h1 id="assumptions">assumptions</h1>
+<p>This guide assumes that you are using React Native with Expo.
+React Native is a flavor of the frontend web framework React that
+allows you to write mobile code in Javascript for both Android, iOS
+and even the web all at once. Expo is a platform for React Native
+development with plenty of developer friendly tooling.</p>
+<p>Expo comes with a CLI app that installs through npm. The platform
+also provides many useful packages like local storage and even push
+notification services to use in your app.</p>
+<h1 id="forewarning">forewarning</h1>
+<p>Getting on the app store is a long and painful process. I&rsquo;m sorry,
+but this is the way that Steve Jobs wanted it. Here&rsquo;s some of the
+things you have to do. Steps 1 and 3 are only for accounts that are not sole proprietors.</p>
+<ol>
+<li>Form an LLC</li>
+<li>Pay the $99 <em>YEARLY</em> Apple Developer fee</li>
+<li>Acquire a D.U.N.S number (You can do this through Apple)</li>
+</ol>
+<p>Only after you&rsquo;ve done these will you be enrolled in the Apple Developer Program.</p>
+<h1 id="appjson">app.json</h1>
+<p>First, you may need to adjust your app.json file
+in the root of your project.
+Be sure to adjust the name and the slug of your
+project.</p>
+<p>Here&rsquo;s an example with my app.json.</p>
+<pre tabindex="0"><code>{
+  &#34;expo&#34;: {
+    &#34;name&#34;: &lt;YOUR APP NAME&gt;,
+    &#34;slug&#34;: &lt;SOMESLUG&gt;,
+    &#34;version&#34;: &#34;2.0.1&#34;,
+    &#34;privacy&#34;: &#34;unlisted&#34;,
+    &#34;orientation&#34;: &#34;portrait&#34;,
+    &#34;icon&#34;: &#34;./assets/icon.png&#34;,
+    &#34;userInterfaceStyle&#34;: &#34;light&#34;,
+    &#34;splash&#34;: {
+      &#34;image&#34;: &#34;./assets/splash.png&#34;,
+      &#34;resizeMode&#34;: &#34;contain&#34;,
+      &#34;backgroundColor&#34;: &#34;#ffffff&#34;
+    },
+    ...
+}
+</code></pre><h1 id="expo-services">expo services</h1>
+<p>Next if you haven&rsquo;t already, you should install
+eas-cli. EAS is Expo Application Services. This
+will help you build, submit, and update your app
+and will be the primary way you interact with
+Apple&rsquo;s App Store Connect.</p>
+<p>Install it with
+<code>npm install -g eas-cli</code></p>
+<p>After installing you must log in to your Expo
+account.</p>
+<p><code>eas login</code></p>
+<p>Provide your Expo credentials.</p>
+<p>You can check if you are properly logged in with
+<code>eas whoami</code></p>
+<h1 id="configure-project">configure project</h1>
+<p>Expo does some special magic to turn your
+javascript code into natively executable code on
+a phone. In order to do this, we need to
+configure your project.</p>
+<p>Run</p>
+<p><code>eas build:configure</code></p>
+<p>and select iOS.</p>
+<p>You should now see a eas.json file in the root
+of your project directory. We&rsquo;ll add some information to this later.</p>
+<h1 id="build-project">build project</h1>
+<p>Building should be simple now.</p>
+<p>Run</p>
+<p><code>eas build --platform ios</code></p>
+<p>You will be asked for a bundle identifier.
+It is a unique string used to identify your
+app.
+Something like
+<code>com.your.app.name</code>
+works just fine.</p>
+<p>Next you will be asked to log into your Apple
+developer account. Please do this. It will
+automate the process greatly.</p>
+<p>Following that, you will be asked if you would
+like to generate a Apple Distribution
+Certificate.
+This certificate just states that the application
+was built on a certain computer, (your computer)
+and has not been tampered with.
+Say yes.</p>
+<p>Same for Apple provisioning profile. Say yes.</p>
+<p>Your may be asked for more or less things. Push
+notifications etc.
+I would say yes to most of these things except in
+special cases.</p>
+<p>Eventually your terminal will show you that
+your build is queued up, or is building.
+Just be patient. This might take a awhile. 5 hours
+for me the last time I tried.</p>
+<p>If you want to check on the progress, you can by clicking
+the link shown.</p>
+<h1 id="prepare-app-store-connect">prepare app store connect</h1>
+<p>On your browser, sign into your Apple developer account and find your
+way to App Store Connect.</p>
+<p>Select My Apps and add an iOS app.
+Enter all the appropriate information that is needed.
+Go ahead and make a SKU however you&rsquo;d like to.</p>
+<p>You should now have a blank page for your app.</p>
+<p>In order to be considered for review, you must provide screenshots
+of your app working, a test user&rsquo;s sign-in credentials, age ratings, etc.</p>
+<p>Fill out as much information as you can on the App Information, Pricing and Availability,
+App Privacy tabs.</p>
+<p>For App Privacy, you will need to create a privacy policy even if you
+don&rsquo;t collect any user data. If you want to do this quickly you can use
+<a href="https://app.privacypolicies.com/wizard/privacy-policy">PrivacyPolicies.com</a>
+It costs about $62, but is immediately available.</p>
+<p>For Screenshots you will need to use screenshots that are the dimensions of
+the iPhone 11 Max and the iPhone 8 Max screens. Just load your app in the
+Simulator with these phones and take 3 screenshots.</p>
+<p>Now all that&rsquo;s left is submitting/uploading your build.</p>
+<h1 id="submitupload-your-build">submit/upload your build</h1>
+<p>This is where some terminology will get quite confusing. So follow along
+close!</p>
+<p>In this step we will submit your build to Apple
+App Store Connect, but this is <em>NOT</em> the final App Store
+submission. It is merely just sending your built code
+to Apple.</p>
+<p>Before we can send our build, we need to change some things in eas.json.</p>
+<p>In the submit.production.ios object you will need to add.</p>
+<ol>
+<li>appleId (Your apple id email)</li>
+<li>ascAppId (Found in App Store Connect under the App Information tab as Apple ID)</li>
+<li>appleTeamId (Found in the Apple Developer Dashboard under the Membership as Team ID tab)</li>
+</ol>
+<pre tabindex="0"><code>{
+  ...
+  &#34;submit&#34;: {
+    &#34;production&#34;: {
+      &#34;ios&#34;: {
+        &#34;appleId&#34;: &#34;&lt;YOUR APPLE ID EMAIL&gt;&#34;,
+        &#34;ascAppId&#34;: &#34;&lt;APPLE APP ID&gt;&#34;,
+        &#34;appleTeamId&#34;: &#34;&lt;APPLE DEVELOPER TEAM ID&gt;&#34;
+      }
+    }
+  }
+  ...
+}
+</code></pre><p>You can send the latest build of your code to Apple using the EAS cli</p>
+<p>run
+<code>eas submit --platform ios --latest</code></p>
+<p>Choose to add a new ASC API key and log in to your Apple Account.
+After a few minutes your build should have been submitted to Apple.</p>
+<p>Check your App Store Connect TestFlight page if the build is there under the TestFlight tab. It may take
+a few more minutes for it to show up.</p>
+<p>Under status, you will be told the build is missing compliance. <em>~DON&rsquo;T WORRY~</em>
+Hit manage and select No if you aren&rsquo;t using encryption. (You probably aren&rsquo;t)</p>
+<h1 id="internal-testing-on-testflight">internal testing on testflight</h1>
+<p>You are ready to start internal testing!</p>
+<p>Internal testing is just testing the app build on TestFlight, but only for
+members of your Apple Developer Team.</p>
+<p>Hit the plus button on the Internal Testing tab to create a new group and
+send email invites to users that are within your Apple Developer Team.</p>
+<h1 id="external-testing-on-testflight">external testing on testflight</h1>
+<p>To get external testing started your build must pass some review by Apple. The review
+process automatically starts after you create an external testing group.</p>
+<p>This takes about 24-48 hours to complete. Under external testing, your build should
+have a status &ldquo;waiting for review&rdquo;. Just be patient.</p>
+<p>In the meantime, you can tentatively add your beta testers&rsquo; emails to the group with their
+names. Once the review passes, they will be automatically invited to download the app
+through testflight.</p>
+<h1 id="app-store-release">app store release</h1>
+<p>Once again we are on the App Store Connect App Store page. Under the build section,
+select the build that you previously uploaded. Save the information and submit for review.</p>
+<p>Good luck! You will most likely get some push back from Apple. Try your best to answer any of the questions
+they have.</p>
+<p>Let me know if you have any questions about this article or if anything was unclear at <code>bericb@gmail.com</code></p>
+
+		</div>
+		
+		
+	</article>
+</main>
+
+	<footer>
+	<p>&copy; 2022 <a href="http://exarLab.com/">Exar Lab</a></p>
+</footer>
+
+</body>
+</html>
