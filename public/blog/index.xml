@@ -6,7 +6,16 @@
     <description>Recent content in Blogs on Exar Lab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Nov 2022 00:39:37 +0000</lastBuildDate><atom:link href="http://exarLab.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Feb 2023 02:59:21 +0000</lastBuildDate><atom:link href="http://exarLab.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>bunny is endoflife</title>
+      <link>http://exarLab.com/blog/bunny/</link>
+      <pubDate>Tue, 21 Feb 2023 02:59:21 +0000</pubDate>
+      
+      <guid>http://exarLab.com/blog/bunny/</guid>
+      <description>our zoo It&amp;rsquo;s been a year now since my wife and I moved into our current neighborhood. Our initial impressions of the neighborhood was that it was a bit messy with trash and greenery, but we thought it would be an adequate first place.</description>
+    </item>
+    
     <item>
       <title>Game Dev for the World&#39;s Smallest Console</title>
       <link>http://exarLab.com/blog/thumbydev/</link>
