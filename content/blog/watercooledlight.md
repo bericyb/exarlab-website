@@ -1,7 +1,7 @@
 ---
 title: "DIY Watercooled Flashlight"
 date: 2023-03-11T22:31:39Z
-draft: true
+draft: false
 ---
 
 # i've always been scared of the dark
