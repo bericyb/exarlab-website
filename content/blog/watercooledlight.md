@@ -14,7 +14,10 @@ No matter who you are, you were probably scared of the dark at some point in you
 
 Consumer grade flashlights have always been quite lackluster in terms of brightness. So 2 summers ago I made my own high powered flashlight. 
 Most flashlights boast a runtime of tens or 100s of hours, but I was fine with just a few minutes. Brightness was my main goal. 
-My flashlight needed to be reasonably portable. I decided that being able to carry it with just one hand was a requirement. 
+
+My flashlight needed to be just reasonably portable. I decided that being able to carry it with just one hand was a requirement. 
+
+
 Everything needed to cost under $150 or it just wouldn't make sense. 
 
 After finding [this](https://www.amazon.com/gp/product/B00CZ75TWA/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) LED on amazon for only $10 I thought I'd go for it.
@@ -44,8 +47,11 @@ In order to get past this hurdle I need a battery that can supply between 30 - 3
 For the heat problem, I chose watercooling because:
 
 A. Size
+
 B. Heat Transfer Coefficient (23x of Air)
+
 C. Sounds Badass 
+
 
 Despite not having any watercooling knowledge, I knew that I could get away with using simple PC watercooling parts to cool my LED. 
 This is because my LED was rated for 100w and typical desktop CPUs have a similar TDP around 100w.
