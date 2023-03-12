@@ -15,7 +15,7 @@ After the concert I immediately bought a Thumby for everyone in my family with d
 
 # the thumby overview
 
-The Thumby is actually just a RaspberryPi Pico under the hood with an OLED screen, rechargable battery, and buttons. It's made by TinyCircuits and at the time of writing is available [here](https://tinycircuits.com/products/thumby) or on Amazon for about $30. 
+The Thumby is actually just a RaspberryPi Pico under the hood with an OLED screen, rechargeable battery, and buttons. It's made by TinyCircuits and at the time of writing is available [here](https://tinycircuits.com/products/thumby) or on Amazon for about $30. 
 The Thumby has a whopping 2MB of storage for games and supports multiplayer through a link cable. 
 
 # open source goodness
