@@ -26,7 +26,7 @@ So, if they're so cheap, then why does no one walk around with a flashlight brig
 
 Reason 1.
 
-heat sink for LED here.
+![](/images/flashlight/heatsink.png)
 
 Cheap COB LEDs aren't always the most efficient and without ridiculously sized heat sinks, require active cooling. 
 Without this cooling, LEDs will quickly burn themselves out. As their temperature increases, the resistance increases, which leads to more heat, less light, and eventually a burned out LED.
