@@ -21,7 +21,8 @@ Later, I had another excuse that I didn't have the time for Rust's rather steep 
 
 It can be hard to invest time into things that we genuinely think we want to do. 
 
-One of my great vices is YouTube. Like many others I will watch so much content about the stuff I want to do instead of actually doing it. This is the world's greatest trap and it's time to do something about it. 
+One of my great vices is YouTube. Like many others I will watch so much content about the stuff I want to do instead of actually doing it. 
+Living in someone else's dream of doing what you want to do yourself: This is the world's greatest trap and it's time to do something about it. 
 
 The solution is to actually learn Rust. I know you want to. Let's just do it.
 
@@ -52,21 +53,21 @@ Rust is challenging to learn. I believe by spelling out what exactly is difficul
    
     Javascript, Python, or GoLang have memory management abstracted away from you.
    
-    C, C++ have the programmer manage memory. 
+    C and C++ have the programmer manage memory. 
    
-    Rust has the ownership system which is enforced by the complier. More info [here](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+    Rust has the ownership system which is enforced by the complier. This means the programmer manages the memory, but the compiler won't let you be a bad programmer. More info [here](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
 
 2. Rust's standard library is (really) small. 
 
     I was often frustrated when something simple that I wanted to do in Rust needed me to bring in a library. How am I supposed to know that so crate called "Anyhow" is the go-to error type. And I need some kind of runtime called "Tokio"? WTF?
 
-    It's ok. There is a reason why it is this way explained pretty well [here](https://blog.nindalf.com/posts/rust-stdlib/)
+    It's ok. There is a reason why it is this way explained well [here](https://blog.nindalf.com/posts/rust-stdlib/)
     
-    Getting involved in conversations about Rust greatly helps in this area. [Blessed.rs](https://blessed.rs/crates) is a great resource.
+    Getting involved in conversations about Rust greatly helps in navigating the problem of what packages to use. [Blessed.rs](https://blessed.rs/crates) is a great resource.
 
     It can be hard to know what crates to use, when and how, but that's part of learning Rust. Be adventurous and explore libraries. Don't fear library lock-in. 
 
-3. Rust has Macros.
+3. Rust uses Macros pretty extensively.
  
     Macros are a form of metaprogramming. A way to make code write code. 
     
