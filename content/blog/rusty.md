@@ -23,7 +23,7 @@ It can be hard to invest time into things that we genuinely think we want to do.
 
 One of my great vices is YouTube. Like many others I will watch so much content about the stuff I want to do instead of actually doing it. This is the world's greatest trap and it's time to do something about it. 
 
-The solution is to actually learn Rust. 
+The solution is to actually learn Rust. I know you want to. Let's just do it.
 
 # Getting Started 
 
@@ -44,7 +44,7 @@ Open up the terminal. Here we go.
 
 # Difficulties
 
-Rust is challenging to learning. I believe by spelling out what exactly is difficult, we make the process a little easier and the learning curve far more bearable. Here are some things that I wish I knew better before starting.
+Rust is challenging to learn. I believe by spelling out what exactly is difficult, we make the process a little easier and the learning curve far more bearable. Here are some things that I wish I knew better before starting.
 
 ![](https://stevedonovan.github.io/rust-gentle-intro/PPrustS.png)
 
