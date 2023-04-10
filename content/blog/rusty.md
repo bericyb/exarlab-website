@@ -77,8 +77,9 @@ Rust is challenging to learn. I believe by spelling out what exactly is difficul
 
 # Good Luck!
 
-Deciding to learn Rust doesn't mean that you're gonna love it. It doesn't mean you have to ditch Javascript or whatever language you currently love. You have nothing to lose besides some time. Which you would have wasted elsewhere anyways.
+Deciding to learn Rust doesn't mean that you're gonna love it. It doesn't mean you have to ditch Javascript or whatever language you currently love. 
 
+But here's the thing, you have nothing to lose besides some time, which you would have wasted elsewhere anyways.
 Odds are, if you've made it this far into this blog post, you've been on the fence about learning Rust for a while now. I encourage you to jump in. 
 
 After all, what's the worst that could happen? You learn a new programming language that is safe and ultra performant.
