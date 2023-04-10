@@ -46,6 +46,8 @@ Open up the terminal. Here we go.
 
 Rust is challenging to learning. I believe by spelling out what exactly is difficult, we make the process a little easier and the learning curve far more bearable. Here are some things that I wish I knew better before starting.
 
+![](https://stevedonovan.github.io/rust-gentle-intro/PPrustS.png)
+
 1. Rust is a different paradigm of memory management. 
    
     Javascript, Python, or GoLang have memory management abstracted away from you.
