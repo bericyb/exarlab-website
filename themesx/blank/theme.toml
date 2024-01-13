@@ -1,0 +1,5 @@
+name = "Blank"
+description = "Starter Hugo theme for developers."
+tags = ["blog", "plain", "blank", "starter", "development"]
+features = ["blog"]
+min_version = "0.20"

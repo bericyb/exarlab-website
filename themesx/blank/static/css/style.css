@@ -1,0 +1,38 @@
+* {
+    font-family: monospace;
+    font-weight: 100;
+    color: lightgrey;
+    background: #1a1b26;
+    max-width: 800px;
+    margin: auto;
+    padding: 2px;
+}
+
+article {
+}
+
+h1 {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-size: 40px;
+}
+
+h2 {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-size: 30px;
+}
+
+ul {
+    padding-top: 20px;
+    padding-left: 15px;
+    font-size: 30px;
+}
+
+p {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
