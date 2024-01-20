@@ -1,38 +1,59 @@
-* {
-    font-family: monospace;
-    font-weight: 100;
-    color: lightgrey;
-    background: #1a1b26;
-    max-width: 800px;
-    margin: auto;
-    padding: 2px;
+body {
+  font-family: monospace;
+  font-weight: 100;
+  color: lightgrey;
+  background: #1a1b26;
+  max-width: 1000px;
+  margin: auto;
+  padding: 2px;
 }
 
-article {
+a {
+  color: lightgrey;
 }
 
 h1 {
-    padding-bottom: 20px;
-    padding-top: 20px;
-    font-size: 40px;
+  padding-bottom: 5px;
+  padding-top: 20px;
+  font-size: 40px;
 }
 
 h2 {
-    padding-bottom: 20px;
-    padding-top: 20px;
-    font-size: 30px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-size: 30px;
 }
 
 ul {
-    padding-top: 20px;
-    padding-left: 15px;
-    font-size: 30px;
+  padding-left: 15px;
+  font-size: 30px;
+}
+
+li {
+  font-size: 15px;
+  margin-left: 20px;
 }
 
 p {
-    padding-left: 15px;
-    padding-right: 15px;
-    font-size: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 20px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+code {
+  font-family: "Courier New", monospace;
+  background-color: #000000;
+  padding: 8px;
+  display: block;
+  white-space: pre-wrap;
+  border-radius: 4px;
+}
+element.style {
+  display: block;
+}
+
+code > span {
+  display: block !important;
 }
