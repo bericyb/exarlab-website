@@ -1,7 +1,7 @@
 ---
 title: "Word Vectors and AI Prophets: The Church of GPT"
 date: 2024-01-20T10:05:59-07:00
-draft: true
+draft: false
 ---
 
 ### This post contains content that could be viewed as sacrilegious. To be clear, I am not criticizing any particular beliefs or denomination. Enjoy!
