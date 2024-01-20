@@ -8,6 +8,12 @@ body {
   padding: 2px;
 }
 
+img {
+  max-width: 1000px;
+  margin: auto;
+  margin: 20px;
+}
+
 a {
   color: lightgrey;
 }
