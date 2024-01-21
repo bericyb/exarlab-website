@@ -316,4 +316,4 @@ Not long after these things passed through my mind, I ventured into the secluded
 
 ![](/images/prophet/screenshot.png)
 
-I'm kinda busy right now with other things, but if you'd like, please go ahead and visit the [website]() or the nasty [source code]() and start making your own AI prophesies.
+I'm kinda busy right now with other things, but if you'd like, please go ahead and visit the [website](https://prophet-frontend-psi.vercel.app/) and start making your own AI prophesies.
