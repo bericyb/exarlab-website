@@ -11,7 +11,7 @@ The author of the book is MD. PhD. Mark Harper who is an anesthesiologist. Dr. H
 
 # Alleged Benefits
 
-Dr. Harper claims that people who swim in open water or participate in cold water therapy on a weekly basis have an increased ability to regulate their core body temperature and thus recovered from surgery faster than normal. Core body temperature regulation is particularly important while covering from surgery because of the fact that under general anesthesia the body loses its ability to keep itself warm. This can be dangerous for obvious reasons like hypothermia, but studies have shown that [for every 1.9 degrees celsius below body temperature there is 3 times the risk of infection](https://en.wikipedia.org/wiki/Operating_theater#cite_note-5).
+Dr. Harper claims that people who swim in open water or participate in cold water therapy on a weekly basis have an increased ability to regulate their core body temperature and thus recovered from surgery faster than normal. Core body temperature regulation is particularly important while recovering from surgery because of the fact that under general anesthesia the body loses its ability to keep itself warm. This can be dangerous for obvious reasons like hypothermia, but studies have shown that [for every 1.9 degrees celsius below body temperature there is 3 times the risk of infection](https://en.wikipedia.org/wiki/Operating_theater#cite_note-5).
 
 # 1st Time Is Fine, 2nd Is The Worst, 3rd Time Is Addictive
 
