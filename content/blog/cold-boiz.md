@@ -4,8 +4,6 @@ date: 2024-01-21T22:56:28-07:00
 draft: false
 ---
 
-# Cold Water Therapy
-
 ![](/images/coldboiz/plunge1.jpg)
 
 After reading the book, [Chill: The Cold Water Swim Cure](https://www.amazon.com/Chill-Water-Cure_-Transformative-Guide/dp/1797213768) I was pretty convinced of the efficacy of cold water therapy. To be frank, I don't actually recommend buying the book or even reading it if you read this blog post.
