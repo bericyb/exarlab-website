@@ -1,10 +1,12 @@
 ---
 title: "Cold Water Therapy"
 date: 2024-01-21T22:56:28-07:00
-draft: true
+draft: false
 ---
 
 # Cold Water Therapy
+
+![](/images/coldboiz/plunge1.jpg)
 
 After reading the book, [Chill: The Cold Water Swim Cure](https://www.amazon.com/Chill-Water-Cure_-Transformative-Guide/dp/1797213768) I was pretty convinced of the efficacy of cold water therapy. To be frank, I don't actually recommend buying the book or even reading it if you read this blog post.
 The author of the book is MD. PhD. Mark Harper who is an anesthesiologist. Dr. Harper presents his research findings surrounding cold water therapy and surgery recovery alongside different less relevant (and less interesting) anecdotal stories promoting cold water therapy.
@@ -20,6 +22,8 @@ In the book, Dr. Harper says that the first time is easy because you're filled w
 
 The next week we did the same and it was far worse. Maybe it was the overcast weather or just knowing just how much pain we were in for.
 
+![](/images/coldboiz/plunge2.jpg)
+
 The third week was even harder to get in the water, but after getting out I started to understand the reason why people enjoy swimming in cold water.
 
 My last cold plunge of the year was November 11th 2023 where the water reached a frigid 42 degrees F.
@@ -34,6 +38,8 @@ My early Saturday mornings at the Provo river were filled with encounters with v
 Cold plunges attract a certain kind of person. A person who is not afraid of a daunting challenge that they wholly understand. I think the reason is because getting into cold water no matter what, _just sucks_.
 Getting yourself into the cold water is always a mental game and it never gets easier, but it's a quick way to put yourself outside of your comfort zone and train yourself to be stronger mentally. It's something to be consistently proud of and way to grow mental fortitude.
 Additionally, going with friends builds a great sense of camaraderie.
+
+![](/images/coldboiz/plunge3.jpg)
 
 # Safety
 
