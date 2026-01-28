@@ -4,7 +4,7 @@ date: 2024-01-20T10:05:59-07:00
 draft: false
 ---
 
-### This post contains content that could be viewed as sacrilegious. To be clear, I am not criticizing any particular beliefs or denomination. Enjoy!
+### This post contains content that could be viewed as sacrilegious. It is not a criticism of any particular beliefs or denomination.
 
 ![](/images/prophet/prophet.png)
 

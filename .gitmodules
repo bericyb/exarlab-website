@@ -1,0 +1,6 @@
+[submodule "themes/poison"]
+	path = themes/poison
+	url = git@github.com:lukeorth/poison.git
+[submodule "themes/hugo-PaperMod"]
+	path = themes/hugo-PaperMod
+	url = git@github.com:adityatelange/hugo-PaperMod.git

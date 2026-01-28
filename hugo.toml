@@ -1,0 +1,4 @@
+baseURL = 'https://exarlab.com/'
+languageCode = 'en-us'
+title = 'Exar Lab'
+theme = 'hugo-paperMod'
