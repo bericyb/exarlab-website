@@ -92,11 +92,18 @@ log_info "  Images location: $STATIC_IMAGES_DIR"
 log_info "========================================="
 log_info "Exar Notes deployment complete!"
 
-# Build Hugo site
-log_info "Building Hugo site..."
+# Smokecheck build - verify Hugo can build successfully
+log_info "Running smokecheck build..."
 cd "$HUGO_ROOT"
-hugo
-log_info "Hugo build complete! Site is in $HUGO_ROOT/public"
+if hugo; then
+    log_info "Smokecheck build successful! Site would build correctly."
+    # Clean up the build output since it's just a smokecheck
+    rm -rf "$HUGO_ROOT/public"
+    log_info "Cleaned up smokecheck build output"
+else
+    log_error "Smokecheck build failed! Please fix errors before deploying."
+    exit 1
+fi
 
 # Git operations
 log_info "Committing changes to git..."
@@ -105,8 +112,8 @@ log_info "Committing changes to git..."
 if git diff --quiet && git diff --staged --quiet; then
     log_warn "No changes to commit"
 else
-    # Add all changes
-    git add content/ static/ public/
+    # Add content and static changes only (not public/)
+    git add content/ static/
     
     # Create commit with timestamp
     COMMIT_MSG="Update Exar Notes - $(date '+%Y-%m-%d %H:%M:%S')"
@@ -121,5 +128,6 @@ fi
 
 echo ""
 log_info "========================================="
-log_info "All done! Your Exar Notes are live!"
+log_info "All done! Your Exar Notes changes are ready!"
+log_info "Note: The VPS will build the public directory on deployment"
 log_info "========================================="
