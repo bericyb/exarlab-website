@@ -21,3 +21,4 @@ draft: true
 - [ ] [[No red meat for a month]]
 - [ ] [[Inventing VIM in VSCode]]
 - [ ] [[Ssh pong]]
+- [ ] [[what cello taught me about life]]
