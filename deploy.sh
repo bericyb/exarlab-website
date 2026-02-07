@@ -108,8 +108,9 @@ fi
 # Git operations
 log_info "Committing changes to git..."
 
-# Check if there are any changes to commit
-if git diff --quiet && git diff --staged --quiet; then
+# Check if there are any changes to commit (including new untracked files)
+git add -N content/ static/ 2>/dev/null || true
+if git diff --quiet && git diff --staged --quiet && [ -z "$(git status --porcelain content/ static/)" ]; then
     log_warn "No changes to commit"
 else
     # Add content and static changes only (not public/)

@@ -1,9 +1,9 @@
 baseURL = 'https://exarlab.com/'
 languageCode = 'en-us'
-title = 'Exar Lab'
+title = 'Exar Labs LLC'
 
 [params.homeInfoParams]
-Title = "Welcome to Exar Lab"
+Title = "Welcome to Exar Labs LLC"
 Content = "I'm Beric Bearnson and here I write about my life, interests, and projects."
 
 [module]
