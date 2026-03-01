@@ -20,10 +20,10 @@ There's a free tier, and a paid tier for $5/month though, I think the free tier 
 With the paid tier you get unlimited custom alerts, SMS and webhook notifications. 
 
 Finally launching this week after getting 4 rejections from the carriers for SMS approval.
-[cronquery.com](cronquery.com)
+[cronquery.com](https://cronquery.com)
 
 ## Cerebra
-Over a weekend, I made an AI agent that lives in my Obsidian vault. It makes sense. AI loves markdown and that's where all the markdown lives on my computer. It's a cute little project and I think I'm done with it for now. Read about it here. [[Brainstorming With The AI In My Vault]]
+Over a weekend, I made an AI agent that lives in my Obsidian vault. It makes sense. AI loves markdown and that's where all the markdown lives on my computer. It's a cute little project and I think I'm done with it for now. Read about it in my previous blog post [Brainstorming with the AI in my vault](https://exarlab.com/posts/brainstorming-with-the-ai-in-my-vault/).
 
 # Fun 
 ## HTML Canvas

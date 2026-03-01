@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>aesthetics</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html, body {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			#canvas {
+				display: block;
+				width: 100vw;
+				height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="canvas"></canvas>
+		<script>
+			const canvas = document.getElementById('canvas');
+			const ctx = canvas.getContext('2d');
+
+			function resize() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+
+			const circles = [];
+
+			const amberColors = [
+				{ r: 255, g: 191, b: 0 },
+				{ r: 255, g: 165, b: 0 },
+				{ r: 255, g: 140, b: 0 },
+				{ r: 255, g: 127, b: 80 },
+				{ r: 255, g: 215, b: 0 },
+				{ r: 255, g: 185, b: 15 }
+			];
+
+			const blueIceColors = [
+				{ r: 173, g: 216, b: 230 },
+				{ r: 135, g: 206, b: 235 },
+				{ r: 100, g: 149, b: 237 },
+				{ r: 176, g: 196, b: 222 },
+				{ r: 70, g: 130, b: 180 },
+				{ r: 95, g: 158, b: 160 }
+			];
+
+			let colorTransition = 0;
+			let transitionDirection = 1;
+			const transitionStep = 0.1;
+
+			function interpolateColor(color1, color2, t) {
+				return {
+					r: Math.round(color1.r + (color2.r - color1.r) * t),
+					g: Math.round(color1.g + (color2.g - color1.g) * t),
+					b: Math.round(color1.b + (color2.b - color1.b) * t)
+				};
+			}
+
+			function spawnCircle() {
+				const amberColor = amberColors[Math.floor(Math.random() * amberColors.length)];
+				const blueIceColor = blueIceColors[Math.floor(Math.random() * blueIceColors.length)];
+				const color = interpolateColor(amberColor, blueIceColor, colorTransition);
+			return {
+				x: Math.random(),
+				y: Math.random(),
+				radius: 0,
+				maxAlpha: 0.9 + Math.random() * 0.1,
+				maxRadius: 400 + Math.random() * 600,
+				growthRate: 0.1 + Math.random() * 1.1,
+				sx: (Math.random() - 0.5) * 0.0003,
+				sy: (Math.random() - 0.5) * 0.0003,
+				color: color
+			};
+			}
+
+			for (let i = 0; i < 12; i++) {
+				circles.push(spawnCircle());
+			}
+
+			let time = 0;
+
+			function draw() {
+				const w = canvas.width;
+				const h = canvas.height;
+
+				time += 0.001;
+				colorTransition += (1 / 3600) * transitionDirection;
+				if (colorTransition >= 1 || colorTransition <= 0) {
+					transitionDirection *= -1;
+					colorTransition = Math.max(0, Math.min(1, colorTransition));
+				}
+				const hueShift = Math.sin(time) * 10;
+				const bgHue1 = 280 - colorTransition * 60;
+				const bgHue2 = 290 - colorTransition * 65;
+				const bgHue3 = 270 - colorTransition * 50;
+				const saturation = 35 - colorTransition * 15;
+				const lightness = 15 - colorTransition * 5;
+				const gradient = ctx.createLinearGradient(0, 0, w, h);
+				gradient.addColorStop(0, `hsl(${bgHue1 + hueShift}, ${saturation}%, ${lightness}%)`);
+				gradient.addColorStop(0.5, `hsl(${bgHue2 + hueShift}, ${saturation - 5}%, ${lightness + 2}%)`);
+				gradient.addColorStop(1, `hsl(${bgHue3 + hueShift}, ${saturation}%, ${lightness}%)`);
+				ctx.fillStyle = gradient;
+				ctx.fillRect(0, 0, w, h);
+
+				for (let i = circles.length - 1; i >= 0; i--) {
+					const c = circles[i];
+
+					c.x += c.sx;
+					c.y += c.sy;
+
+					if (c.x < -0.2) c.x = 1.2;
+					if (c.x > 1.2) c.x = -0.2;
+					if (c.y < -0.2) c.y = 1.2;
+					if (c.y > 1.2) c.y = -0.2;
+
+					c.radius += c.growthRate;
+
+					const progress = Math.min(1, c.radius / c.maxRadius);
+					let alpha = 0;
+					if (progress <= 0.5) {
+						alpha = c.maxAlpha * (progress / 0.5);
+					} else {
+						alpha = c.maxAlpha * ((1 - progress) / 0.5);
+					}
+
+					ctx.shadowBlur = 20;
+					ctx.shadowColor = `rgba(${c.color.r}, ${c.color.g}, ${c.color.b}, 0.5)`;
+					ctx.beginPath();
+					ctx.arc(c.x * w, c.y * h, c.radius, 0, Math.PI * 2);
+					ctx.fillStyle = `rgba(${c.color.r}, ${c.color.g}, ${c.color.b}, ${Math.max(0, alpha)})`;
+					ctx.fill();
+					ctx.shadowBlur = 0;
+
+					if (progress >= 1) {
+						circles[i] = spawnCircle();
+					}
+				}
+
+				requestAnimationFrame(draw);
+			}
+
+			window.addEventListener('resize', resize);
+			resize();
+			draw();
+		</script>
+	</body>
+</html>

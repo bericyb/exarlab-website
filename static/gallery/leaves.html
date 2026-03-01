@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>leaves</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html, body {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			#canvas {
+				display: block;
+				width: 100vw;
+				height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="canvas"></canvas>
+		<script>
+			const canvas = document.getElementById('canvas');
+			const ctx = canvas.getContext('2d');
+
+			function resize() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+
+			window.addEventListener('resize', resize);
+			resize();
+
+			const leaves = [];
+			const corridorWidth = 3200;
+			const corridorHeight = 600;
+			let spawnTimer = 0;
+			let colorTransition = 0;
+			let transitionDirection = 1;
+
+			const greenColors = [
+				{ r: 34, g: 139, b: 34 },
+				{ r: 50, g: 205, b: 50 },
+				{ r: 60, g: 179, b: 113 },
+				{ r: 85, g: 150, b: 85 },
+				{ r: 46, g: 125, b: 50 }
+			];
+
+			const redOrangeColors = [
+				{ r: 220, g: 20, b: 60 },
+				{ r: 255, g: 69, b: 0 },
+				{ r: 255, g: 140, b: 0 },
+				{ r: 255, g: 99, b: 71 },
+				{ r: 255, g: 165, b: 0 },
+				{ r: 178, g: 34, b: 34 }
+			];
+
+			function interpolateColor(color1, color2, t) {
+				return {
+					r: Math.round(color1.r + (color2.r - color1.r) * t),
+					g: Math.round(color1.g + (color2.g - color1.g) * t),
+					b: Math.round(color1.b + (color2.b - color1.b) * t)
+				};
+			}
+
+			function spawnLeaf() {
+				const greenColor = greenColors[Math.floor(Math.random() * greenColors.length)];
+				const redOrangeColor = redOrangeColors[Math.floor(Math.random() * redOrangeColors.length)];
+				const color = interpolateColor(greenColor, redOrangeColor, colorTransition);
+				const side = Math.random() < 0.5 ? 'left' : 'right';
+
+			return {
+				side: side,
+				z: -100 + Math.random() * 50,
+				width: 4000 + Math.random() * 4000,
+				height: 25000 + Math.random() * 20000,
+				rotation: side === 'left' ? Math.PI / 2 : -Math.PI / 2,
+				color: color,
+				maxAlpha: 0.8 + Math.random() * 0.2,
+				opacity: 0,
+				fadeState: 'in'
+			};
+			}
+
+			function project(x, y, z, w, h) {
+				const fov = 600;
+				const scale = fov / (fov + z);
+				const px = w / 2 + x * scale;
+				const py = h / 2 + y * scale;
+				return { x: px, y: py, scale: scale };
+			}
+
+			function drawLeaf(leaf, w, h) {
+				const xOffset = leaf.side === 'left' ? corridorWidth / 2 : -corridorWidth / 2;
+				const projected = project(xOffset, 0, leaf.z, w, h);
+
+				if (projected.scale <= 0) return;
+
+				const size = leaf.height * projected.scale;
+				const width = leaf.width * projected.scale;
+
+				if (size < 2) return;
+
+				ctx.save();
+				ctx.translate(projected.x, h);
+				ctx.rotate(leaf.rotation);
+
+				const alpha = leaf.opacity;
+
+				ctx.shadowBlur = 20 * projected.scale;
+				ctx.shadowColor = `rgba(${leaf.color.r}, ${leaf.color.g}, ${leaf.color.b}, 0.5)`;
+
+				// Draw leaf with rotation point at the base (stem end)
+				// The leaf extends from (0,0) to (0, -size) when pointing up
+				// When rotated 90deg, it extends from (0,0) to (size, 0)
+				ctx.beginPath();
+				ctx.moveTo(0, 0);
+				ctx.bezierCurveTo(width / 2, -size * 0.33, width / 2, -size * 0.66, 0, -size);
+				ctx.bezierCurveTo(-width / 2, -size * 0.66, -width / 2, -size * 0.33, 0, 0);
+				ctx.closePath();
+
+				const gradient = ctx.createLinearGradient(-width / 2, 0, width / 2, 0);
+				gradient.addColorStop(0, `rgba(${leaf.color.r}, ${leaf.color.g}, ${leaf.color.b}, ${alpha})`);
+				gradient.addColorStop(0.5, `rgba(${leaf.color.r + 20}, ${leaf.color.g + 20}, ${leaf.color.b + 10}, ${alpha})`);
+				gradient.addColorStop(1, `rgba(${leaf.color.r}, ${leaf.color.g}, ${leaf.color.b}, ${alpha})`);
+				ctx.fillStyle = gradient;
+				ctx.fill();
+
+				ctx.beginPath();
+				ctx.moveTo(0, -size * 0.1);
+				ctx.lineTo(0, -size + size * 0.1);
+				ctx.strokeStyle = `rgba(${leaf.color.r - 20}, ${leaf.color.g - 20}, ${leaf.color.b - 20}, ${alpha * 0.6})`;
+				ctx.lineWidth = Math.max(1, 2 * projected.scale);
+				ctx.stroke();
+
+				ctx.restore();
+			}
+
+			function draw() {
+				const w = canvas.width;
+				const h = canvas.height;
+
+				ctx.fillStyle = '#0a1a0a';
+				ctx.fillRect(0, 0, w, h);
+
+				spawnTimer++;
+				if (spawnTimer > 40) {
+					leaves.push(spawnLeaf());
+					spawnTimer = 0;
+				}
+
+				colorTransition += 0.0005 * transitionDirection;
+				if (colorTransition >= 1 || colorTransition <= 0) {
+					transitionDirection *= -1;
+					colorTransition = Math.max(0, Math.min(1, colorTransition));
+				}
+
+				leaves.sort((a, b) => a.z - b.z);
+
+				for (let i = leaves.length - 1; i >= 0; i--) {
+					const leaf = leaves[i];
+					leaf.z += 10;
+
+					const startZ = -100;
+					const fadeInEnd = 1100;
+					const fadeOutStart = 2500;
+					const endZ = 50000;
+
+					const progress = Math.min(1, (leaf.z - 50) / (endZ - 50));
+					const startRotation = leaf.side === 'left' ? Math.PI / 2 : -Math.PI / 2;
+					const targetRotation = 0;
+					const rotationProgress = Math.min(1, progress / 0.25);
+					leaf.rotation = startRotation + (targetRotation - startRotation) * rotationProgress;
+
+					if (leaf.z < fadeInEnd) {
+						const fadeProgress = (leaf.z - startZ) / (fadeInEnd - startZ);
+						leaf.opacity = Math.min(1, Math.max(0, fadeProgress)) * leaf.maxAlpha;
+					} else if (rotationProgress > 0.5) {
+						leaf.opacity = leaf.maxAlpha * (1 - (rotationProgress - 0.5) / 0.5);
+					} else {
+						leaf.opacity = leaf.maxAlpha;
+					}
+
+					if (leaf.opacity <= 0 || progress >= 1) {
+						leaves.splice(i, 1);
+						continue;
+					}
+
+					drawLeaf(leaf, w, h);
+				}
+
+				requestAnimationFrame(draw);
+			}
+
+			draw();
+		</script>
+	</body>
+</html>

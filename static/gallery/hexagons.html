@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexagon Perspective</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let colorCycle = 0;
+        let hexagons = [];
+        let animatingHexagons = [];
+        let launchWaves = []; // Array of active launch waves
+        let lastClickTime = Date.now();
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initHexagons();
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Click to launch from that location
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickPoint = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+            
+            // Create a sorted list of hexagons by distance from click point
+            const sortedHexagons = hexagons
+                .map((hex, originalIndex) => ({
+                    hex: hex,
+                    originalIndex: originalIndex,
+                    distance: Math.sqrt((hex.x - clickPoint.x) * (hex.x - clickPoint.x) + (hex.y - clickPoint.y) * (hex.y - clickPoint.y))
+                }))
+                .sort((a, b) => a.distance - b.distance);
+            
+            // Add new launch wave
+            launchWaves.push({
+                sortedHexagons: sortedHexagons,
+                index: 0,
+                launchCount: 1 // Start with 1, will grow exponentially
+            });
+            
+            // Reset inactivity timer
+            lastClickTime = Date.now();
+        });
+
+        function initHexagons() {
+            hexagons = [];
+            const size = 12; // 2x denser (half of original 25)
+            const hexWidth = size * 2;
+            const hexHeight = size * Math.sqrt(3);
+            const xSpacing = hexWidth * 0.75;
+            const ySpacing = hexHeight;
+            const cols = Math.ceil(width / xSpacing) + 2;
+            const rows = Math.ceil(height / ySpacing) + 2;
+
+            for (let row = -2; row < rows; row++) {
+                for (let col = -2; col < cols; col++) {
+                    let x = col * xSpacing;
+                    let y = row * ySpacing;
+                    
+                    if (col % 2 !== 0) {
+                        y += ySpacing / 2;
+                    }
+
+                    hexagons.push({
+                        x: x,
+                        y: y,
+                        row: row,
+                        col: col,
+                        state: 'normal', // normal, launching, regrowing
+                        height: 0, // cylinder height
+                        offset: 0, // upward movement offset
+                        maxHeight: 0, // target height for this cylinder
+                        speed: 0, // speed for this cylinder
+                        opacity: 1, // opacity for fading
+                        regrowth: 1 // 0 to 1 for regrowth
+                    });
+                }
+            }
+
+            launchWaves = [];
+        }
+
+        // Launch hexagons in waves from launch centers
+        setInterval(() => {
+            // Process each active wave
+            launchWaves = launchWaves.filter(wave => {
+                // Launch the current batch
+                let launched = 0;
+                const maxToLaunch = Math.ceil(wave.launchCount);
+                
+                while (launched < maxToLaunch && wave.index < wave.sortedHexagons.length) {
+                    const hexData = wave.sortedHexagons[wave.index];
+                    const hex = hexData.hex;
+                    
+                    if (hex.state === 'normal') {
+                        hex.state = 'launching';
+                        hex.height = 0;
+                        hex.offset = 0;
+                        hex.maxHeight = 40;
+                        hex.speed = 2 + Math.random() * 1;
+                        hex.opacity = 1;
+                        launched++;
+                    }
+                    
+                    wave.index++;
+                }
+                
+                // Grow slightly slower than linear (add 0.7 each interval)
+                wave.launchCount += 0.7;
+                
+                // Keep wave active if there are more hexagons to launch
+                return wave.index < wave.sortedHexagons.length;
+            });
+        }, 10);
+
+        function interpolateColor(color1, color2, factor) {
+            const c1 = parseInt(color1.slice(1), 16);
+            const c2 = parseInt(color2.slice(1), 16);
+            
+            const r1 = (c1 >> 16) & 0xff;
+            const g1 = (c1 >> 8) & 0xff;
+            const b1 = c1 & 0xff;
+            
+            const r2 = (c2 >> 16) & 0xff;
+            const g2 = (c2 >> 8) & 0xff;
+            const b2 = c2 & 0xff;
+            
+            const r = Math.round(r1 + (r2 - r1) * factor);
+            const g = Math.round(g1 + (g2 - g1) * factor);
+            const b = Math.round(b1 + (b2 - b1) * factor);
+            
+            return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+        }
+
+        // Color schemes
+        const colorSchemes = [
+            { dark: '#1a1a2f', light: '#4a4a6f' }, // Blue-purple
+            { dark: '#1a2f1a', light: '#4a6f4a' }, // Green
+            { dark: '#2f1a1a', light: '#6f4a4a' }, // Red
+            { dark: '#2f2f1a', light: '#6f6f4a' }, // Yellow-brown
+            { dark: '#1a2f2f', light: '#4a6f6f' }, // Cyan
+            { dark: '#2f1a2f', light: '#6f4a6f' }  // Magenta
+        ];
+
+        function getCurrentColors() {
+            const schemeIndex = Math.floor(colorCycle) % colorSchemes.length;
+            const nextSchemeIndex = (schemeIndex + 1) % colorSchemes.length;
+            const schemeFactor = colorCycle - Math.floor(colorCycle);
+
+            const currentScheme = colorSchemes[schemeIndex];
+            const nextScheme = colorSchemes[nextSchemeIndex];
+
+            return {
+                dark: interpolateColor(currentScheme.dark, nextScheme.dark, schemeFactor),
+                light: interpolateColor(currentScheme.light, nextScheme.light, schemeFactor)
+            };
+        }
+
+        // Draw a hexagon at given center position with given size
+        function drawHexagon(x, y, size) {
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i;
+                const hx = x + size * Math.cos(angle);
+                const hy = y + size * Math.sin(angle);
+                if (i === 0) {
+                    ctx.moveTo(hx, hy);
+                } else {
+                    ctx.lineTo(hx, hy);
+                }
+            }
+            ctx.closePath();
+        }
+
+        // Draw hexagonal cylinder
+        function drawHexCylinder(x, y, size, height, color) {
+            const topY = y - height;
+            
+            // Parse base color
+            const baseColorInt = parseInt(color.slice(1), 16);
+            const r = (baseColorInt >> 16) & 0xff;
+            const g = (baseColorInt >> 8) & 0xff;
+            const b = baseColorInt & 0xff;
+            
+            // Draw only the front 3 trapezoidal faces with different shading
+            // Faces: 0 (right), 1 (bottom-right), 2 (bottom-left/front), 3 (left)
+            // We want faces 1, 2, 3 to be visible
+            ctx.beginPath();
+            for (let i = 0; i <= 2; i++) {
+                const angle1 = (Math.PI / 3) * i;
+                const angle2 = (Math.PI / 3) * (i + 1);
+                
+                const x1Bottom = x + size * Math.cos(angle1);
+                const y1Bottom = y + size * Math.sin(angle1);
+                const x2Bottom = x + size * Math.cos(angle2);
+                const y2Bottom = y + size * Math.sin(angle2);
+                
+                const x1Top = x + size * Math.cos(angle1);
+                const y1Top = topY + size * Math.sin(angle1);
+                const x2Top = x + size * Math.cos(angle2);
+                const y2Top = topY + size * Math.sin(angle2);
+                
+                // Calculate shading based on face angle
+                let shadeFactor;
+                if (i === 0) shadeFactor = 0.4; // Right - darkest
+                else if (i === 1) shadeFactor = 0.75; // Middle - medium
+                else shadeFactor = 1.2; // Left - brightest
+                
+                const shadedR = Math.round(r * shadeFactor);
+                const shadedG = Math.round(g * shadeFactor);
+                const shadedB = Math.round(b * shadeFactor);
+                const faceColor = `rgb(${shadedR},${shadedG},${shadedB})`;
+                
+                ctx.fillStyle = faceColor;
+                ctx.beginPath();
+                ctx.moveTo(x1Bottom, y1Bottom);
+                ctx.lineTo(x2Bottom, y2Bottom);
+                ctx.lineTo(x2Top, y2Top);
+                ctx.lineTo(x1Top, y1Top);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Draw top face (brightest)
+            drawHexagon(x, topY, size);
+            const topR = Math.min(255, Math.round(r * 1.1));
+            const topG = Math.min(255, Math.round(g * 1.1));
+            const topB = Math.min(255, Math.round(b * 1.1));
+            ctx.fillStyle = `rgb(${topR},${topG},${topB})`;
+            ctx.fill();
+            ctx.strokeStyle = '#0a0a0f';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            
+            // Draw cylinder outline - only the front-facing bottom edges (no fill)
+            ctx.strokeStyle = '#0a0a0f';
+            ctx.lineWidth = 1.5;
+            
+            // Draw the four vertical edges
+            for (let i = 0; i <= 3; i++) {
+                const angle = (Math.PI / 3) * i;
+                const xEdge = x + size * Math.cos(angle);
+                const yBottom = y + size * Math.sin(angle);
+                const yTop = topY + size * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.moveTo(xEdge, yBottom);
+                ctx.lineTo(xEdge, yTop);
+                ctx.stroke();
+            }
+            
+            // Draw the bottom three visible edges
+            ctx.beginPath();
+            for (let i = 0; i <= 3; i++) {
+                const angle = (Math.PI / 3) * i;
+                const xPoint = x + size * Math.cos(angle);
+                const yPoint = y + size * Math.sin(angle);
+                
+                if (i === 0) {
+                    ctx.moveTo(xPoint, yPoint);
+                } else {
+                    ctx.lineTo(xPoint, yPoint);
+                }
+            }
+            ctx.stroke();
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#0a0a0f';
+            ctx.fillRect(0, 0, width, height);
+
+            const size = 12; // Match smaller hexagon size
+
+            // Get current color scheme
+            const colors = getCurrentColors();
+            
+            // Auto-launch from center if no click for 10 seconds
+            const currentTime = Date.now();
+            if (currentTime - lastClickTime > 10000) {
+                // Trigger center launch
+                const centerPoint = {
+                    x: width / 2,
+                    y: height / 2
+                };
+                
+                const sortedHexagons = hexagons
+                    .map((hex, originalIndex) => ({
+                        hex: hex,
+                        originalIndex: originalIndex,
+                        distance: Math.sqrt((hex.x - centerPoint.x) * (hex.x - centerPoint.x) + (hex.y - centerPoint.y) * (hex.y - centerPoint.y))
+                    }))
+                    .sort((a, b) => a.distance - b.distance);
+                
+                launchWaves.push({
+                    sortedHexagons: sortedHexagons,
+                    index: 0,
+                    launchCount: 1
+                });
+                
+                // Reset timer
+                lastClickTime = currentTime;
+            }
+
+            // First pass: Draw all normal and regrowing hexagons (z-index 1-1000)
+            // Only draw hexagons visible on screen
+            hexagons.forEach(hex => {
+                // Skip if hexagon is off screen
+                if (hex.x < -size * 2 || hex.x > width + size * 2 || 
+                    hex.y < -size * 2 || hex.y > height + size * 2) {
+                    return;
+                }
+                
+                // Calculate distance from bottom-left corner (light source)
+                // Bottom-left is x=0, y=height
+                const distanceX = hex.x / width;
+                const distanceY = (height - hex.y) / height;
+                const distanceFromLight = Math.sqrt(distanceX * distanceX + distanceY * distanceY) / Math.sqrt(2);
+                
+                const colorFactor = distanceFromLight;
+                const color = interpolateColor(colors.light, colors.dark, colorFactor);
+
+                if (hex.state === 'regrowing') {
+                    hex.regrowth += 0.02;
+                    
+                    // Draw growing hexagon
+                    const growSize = size * hex.regrowth;
+                    drawHexagon(hex.x, hex.y, growSize);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#0a0a0f';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    if (hex.regrowth >= 1) {
+                        hex.state = 'normal';
+                        hex.regrowth = 1;
+                        hex.height = 0;
+                    }
+                } else if (hex.state === 'normal') {
+                    // Normal hexagon
+                    drawHexagon(hex.x, hex.y, size);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#0a0a0f';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            });
+
+            // Second pass: Draw all launching cylinders (z-index 2000-5000)
+            // Sort launching cylinders by original Y position (back to front)
+            const launchingHexagons = hexagons.filter(h => {
+                // Only include cylinders visible on screen (with some margin for tall cylinders)
+                if (h.state !== 'launching') return false;
+                const cylinderTop = h.y - h.offset - h.height;
+                const cylinderBottom = h.y - h.offset;
+                return !(h.x < -size * 2 || h.x > width + size * 2 || 
+                         cylinderTop > height + 100 || cylinderBottom < -100);
+            });
+            
+            launchingHexagons.sort((a, b) => {
+                // Sort by the original Y position (not offset position)
+                return a.y - b.y; // Draw from back to front based on grid position
+            });
+
+            launchingHexagons.forEach(hex => {
+                // Calculate color for this hex (cache distance calculation)
+                const distanceFromLight = hex.distanceFromLight || (() => {
+                    const distanceX = hex.x / width;
+                    const distanceY = (height - hex.y) / height;
+                    hex.distanceFromLight = Math.sqrt(distanceX * distanceX + distanceY * distanceY) / Math.sqrt(2);
+                    return hex.distanceFromLight;
+                })();
+                
+                const color = interpolateColor(colors.light, colors.dark, distanceFromLight);
+
+                // Grow to max height
+                if (hex.height < hex.maxHeight) {
+                    hex.height += hex.speed;
+                } else {
+                    // Once at max height, start moving up and fading
+                    hex.offset += hex.speed;
+                    hex.opacity -= 0.05; // Fade out much faster (was 0.02)
+                }
+                
+                // Apply opacity
+                ctx.globalAlpha = Math.max(0, hex.opacity);
+                
+                // Draw cylinder at offset position
+                drawHexCylinder(hex.x, hex.y - hex.offset, size, hex.height, color);
+                
+                ctx.globalAlpha = 1;
+                
+                // When fully faded or off screen, start regrowing
+                if (hex.opacity <= 0 || hex.y - hex.offset < -200) {
+                    hex.state = 'regrowing';
+                    hex.regrowth = 0;
+                    hex.height = 0;
+                    hex.offset = 0;
+                    hex.opacity = 1;
+                    hex.distanceFromLight = null; // Clear cache
+                }
+            });
+
+            colorCycle += 0.0025;
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+</body>
+</html>
