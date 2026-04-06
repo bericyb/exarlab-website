@@ -10,7 +10,7 @@ It was also our wedding anniversary, but celebrated small with a nice dinner out
 
 # Projects
 ## Notebooks
-I've acquired a Bambu X1C to help with my notebook development. We've bought a domain, set up a store, and narrowing down on our initial product. I've got a few people signed up on a waitlist at [Departure Supply Company](departuresupply.com). I built my own vibratory tumbler for parts finishing and making the final prototypes. I'm pretty proud of what I've made here. Next is the logo, branding, and marketing after a few more iterations. 
+I've acquired a Bambu X1C to help with my notebook development. We've bought a domain, set up a store, and narrowing down on our initial product. I've got a few people signed up on a waitlist at [Departure Supply Company](https://departuresupply.com). I built my own vibratory tumbler for parts finishing and making the final prototypes. I'm pretty proud of what I've made here. Next is the logo, branding, and marketing after a few more iterations. 
 
 ## CronQuery.com
 CronQuery has 1 customer right now which covers 1/6th of the month operating costs. I've reworked the agent to run more efficiently and reduce operating costs, so I'll probably bump up the paid tier to have more frequent queries. Also need to apply some basic polishing on the UI and emails, but I'm much more absorbed in Departure Supply/Notebooks right now. 
